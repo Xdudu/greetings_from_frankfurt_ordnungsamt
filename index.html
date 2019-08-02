@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Greetings from Frankfurt Ordnungsamt</title>
+  </head>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+    }
+    #greetings {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      margin: auto;
+    }
+    #dark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: url(cursor.png), auto;
+    }
+  </style>
+  <body>
+    <img id="greetings" src="greetings.png" />
+    <canvas id="dark"></canvas>
+    <script>
+      const darkmaskEl = document.getElementById('dark')
+      const darkmaskContext = darkmaskEl.getContext('2d')
+      
+      const maskRect = darkmaskEl.getBoundingClientRect()
+      darkmaskEl.width = maskRect.width
+      darkmaskEl.height = maskRect.height
+
+      darkmaskContext.fillRect(0, 0, maskRect.width, maskRect.height)
+
+      darkmaskContext.fillStyle = "rgba(255, 255, 255, 1)"
+      darkmaskContext.globalCompositeOperation = "destination-out"
+      darkmaskContext.fillRect(
+        1360 / 3200 * maskRect.width,
+        (maskRect.height - maskRect.width / 2) / 2 + 722 / 1600 * maskRect.width / 2,
+        560 / 3200 * maskRect.width,
+        158 / 1600 * maskRect.width / 2,
+      )
+
+      const handleErase = e => {
+        const mouseX = e.pageX
+        const mouseY = e.pageY
+        darkmaskContext.fillRect(mouseX, mouseY, 15, 15)
+        darkmaskEl.addEventListener('mousemove', handleErase)
+        darkmaskEl.addEventListener('mouseup', () => {
+          darkmaskEl.removeEventListener('mousemove', handleErase)
+        })
+      }
+
+      darkmaskEl.addEventListener('mousedown', handleErase)
+    </script>
+  </body>
+</html>
