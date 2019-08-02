@@ -49,17 +49,28 @@
         158 / 1600 * maskRect.width / 2,
       )
 
-      const handleErase = e => {
+      const handleMouseErase = e => {
         const mouseX = e.pageX
         const mouseY = e.pageY
         darkmaskContext.fillRect(mouseX, mouseY, 15, 15)
-        darkmaskEl.addEventListener('mousemove', handleErase)
+        darkmaskEl.addEventListener('mousemove', handleMouseErase)
         darkmaskEl.addEventListener('mouseup', () => {
-          darkmaskEl.removeEventListener('mousemove', handleErase)
+          darkmaskEl.removeEventListener('mousemove', handleMouseErase)
         })
       }
 
-      darkmaskEl.addEventListener('mousedown', handleErase)
+      const handleTouchErase = e => {
+        const mouseX = e.pageX
+        const mouseY = e.pageY
+        darkmaskContext.fillRect(mouseX, mouseY, 15, 15)
+        darkmaskEl.addEventListener('touchmove', handleTouchErase)
+        darkmaskEl.addEventListener('touchend', () => {
+          darkmaskEl.removeEventListener('touchmove', handleTouchErase)
+        })
+      }
+
+      darkmaskEl.addEventListener('mousedown', handleMouseErase)
+      darkmaskEl.addEventListener('touchstart', handleTouchErase)
     </script>
   </body>
 </html>
